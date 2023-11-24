@@ -4,13 +4,10 @@ import java.awt.*;
 public class Calculator extends JFrame {
     private static final int INITIAL_X = 1000;
     private static final int INITIAL_Y = 200;
-    private static final int FRAME_WIDTH = 500;
-    private static final int FRAME_HEIGHT = 550;
-
-    private static final int FRAME_PADDING = 20;
-
+    private static final int FRAME_WIDTH = 450;
+    private static final int FRAME_HEIGHT = 650;
+    private static final int FRAME_PADDING = 30;
     private JTextField textFieldEquation;
-
     private JTextField textFieldAnswer;
 
 
@@ -30,7 +27,7 @@ public class Calculator extends JFrame {
 
 
     private class DisplayPanel extends JPanel {
-        private static final int DISPLAY_HEIGHT = 90;
+        private static final int DISPLAY_HEIGHT = 100;
         private static final int DISPLAY_WIDTH = FRAME_WIDTH - 40;
 
         DisplayPanel() {
@@ -38,7 +35,11 @@ public class Calculator extends JFrame {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             textFieldEquation = createTextField();
+            textFieldEquation.setFont(new Font("Arial", Font.ITALIC, 24));
+
             textFieldAnswer = createTextField();
+            textFieldAnswer.setFont(new Font("Arial", Font.BOLD, 32));
+            textFieldAnswer.setHorizontalAlignment(SwingConstants.RIGHT);
 
             add(textFieldEquation);
             add(textFieldAnswer);
@@ -47,14 +48,14 @@ public class Calculator extends JFrame {
         private JTextField createTextField() {
             JTextField textField = new JTextField();
             textField.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-//            textField.setEditable(false);
+            textField.setEditable(false);
             return textField;
         }
     }
 
     private class ButtonPanel extends JPanel {
         private static final int BUTTON_PANEL_WIDTH = FRAME_WIDTH - 40;
-        private static final int BUTTON_PANEL_HEIGHT = FRAME_HEIGHT - 140;
+        private static final int BUTTON_PANEL_HEIGHT = FRAME_HEIGHT - 170;
 
         ButtonPanel() {
             setPreferredSize(new Dimension(BUTTON_PANEL_WIDTH, BUTTON_PANEL_HEIGHT));
@@ -87,13 +88,16 @@ public class Calculator extends JFrame {
 
         private void assignColor(String label) {
             if ("DEL".equalsIgnoreCase(label)) {
-                setBackground(new Color(245, 0, 0));
-            } else if ("1234567890.=".contains(label)) {
-                setBackground(new Color(220, 23, 230));
+                setBackground(new Color(234, 84, 84));
+            } else if ("1234567890.".contains(label)) {
+                setBackground(new Color(203, 182, 175, 255));
             } else if ("X/+-()".contains((label))) {
-                setBackground(new Color(120, 20, 100));
+                setBackground(new Color(78, 227, 147));
+            } else if ("=".contains((label))) {
+                setBackground(new Color(213, 123, 18));
+
             } else {
-                setBackground(new Color(0, 0, 0));
+                setBackground(new Color(236, 123, 123));
             }
         }
 
@@ -105,7 +109,7 @@ public class Calculator extends JFrame {
                 writeOperator(label);
             } else if ("AC".equalsIgnoreCase(label)) {
                 textFieldEquation.setText("");
-                textFieldEquation.setText("");
+                textFieldAnswer.setText("");
             } else if ("DEL".equalsIgnoreCase(label)) {
                 deleteText();
             } else {
@@ -136,9 +140,8 @@ public class Calculator extends JFrame {
 
         private void calculate() {
             String equation = textFieldEquation.getText();
-            String ans = "";
-            textFieldAnswer.setText(ans);
-
+            Double ans = new Math().evaluate(equation);
+            textFieldAnswer.setText(String.valueOf(ans));
         }
 
     }
